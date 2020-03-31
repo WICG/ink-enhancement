@@ -96,12 +96,17 @@ class InkRenderer {
     constructor() {}
 
     renderInkPoint(evt) {
+        // Render segments for any coalesced events delivered, for best possible
+        // segment quality.
         let events = evt.getCoalescedEvents();
-        events.push(evt);
         events.forEach(event => {
             this.renderStrokeSegment(event.x, event.y);
         });
 
+        // Render the actual dispatched PointerEvent, and let the
+        // DelegatedInkTrailPresenter know about this rendering (along with
+        // style information of the stroke).
+        this.renderStrokeSegment(evt.x, evt.y);
         if (this.presenter) {
             this.presenterStyle = { color: "rgba(0, 0, 255, 0.5)", radius: 4 * evt.pressure };
             this.presenter.setLastRenderedPoint(evt, this.presenterStyle);
@@ -146,9 +151,13 @@ interface DelegatedInkTrailPresenter : InkPresenter {
 
 ## Interface Details
 
-Due to uncertainty around the correct execution when `setLastRenderedPoint` is called before setting the stroke style, and it being likely that the radius could change frequently, we decided it may be best to require all relevant properties of rendering the ink stroke in every call to `setLastRenderedPoint`.
+This proposal provides infrastructure for authors to request a generic `InkPresenter` interface.
+A delegated ink trail `InkPresenter` can be requested and provided by User Agents that support it.
 
-Instead of providing `setLastRenderedPoint` with a PointerEvent, just providing x and y values is also an option. It was decided that a trusted pointer event would likely be the better option though, as then we can have easier access to the pointer ID and the site author doesn't have to put extra thought into the position of the ink.
+The `DelegatedInkTrailPresenter` `setLastRenderedPoint` method is main addition of this proposal.
+Authors should use this method to indicate to the User Agent which PointerEvent was used as the last rendered point for the current frame.
+The PointerEvent passed to `setLastRenderedPoint` must be a trusted event and should be the last point that was used to by the application to render ink to the view.
+`setLastRenderedPoint` also accepts all relevant properties of rendering the ink stroke so that the User Agent can closely match.
 
 Providing the presenter with the canvas allows the boundaries of the drawing area to be determined. This is necessary so that points and ink outside of the desired area aren't drawn when points are being forwarded. If no canvas is provided, then the containing viewport size will be used.
 
