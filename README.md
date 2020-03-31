@@ -62,7 +62,7 @@ As Pointer events gets delivered to an app, application continues rendering ink,
 - Co-exist with desynchronized canvas &mdash; one of the purposes of desynchronized canvas is to bypass the system compositor.
 - Co-exist with input prediction &mdash; since the operating system will be rendering points before the application sees them, the application should no longer perform prediction, as doing so may result in a visual 'fork' between the application's rendering and the system's rendering.
 - Take over all ink rendering on top of the application &mdash; this is a progressive enhancement for the "last few pixels" ink rendering, it is not a replacement for a full I/O stack used to present ink in web applications.
-- Provide rich presentation and styling options &mdash; in order to improve latency this proposal suggests to limit presentation option for the "last few pixels" to the bare minimum - color, (stroke) radius, opacity. Applications like Microsoft Office support complex brushes (e.g. Galaxy brush) that should be rendered using existing code - and this proposal will be used in additive manner to add solid color "fluid" ink, that "dries" into complex presentation as input gets to the application.
+- Provide rich presentation and styling options &mdash; in order to improve latency this proposal suggests to limit presentation option for the "last few pixels" to the bare minimum - color, (stroke) diameter, opacity. Applications like Microsoft Office support complex brushes (e.g. Galaxy brush) that should be rendered using existing code - and this proposal will be used in additive manner to add solid color "fluid" ink, that "dries" into complex presentation as input gets to the application.
 
 ## Code example
 ```javascript
@@ -108,7 +108,7 @@ class InkRenderer {
         // style information of the stroke).
         this.renderStrokeSegment(evt.x, evt.y);
         if (this.presenter) {
-            this.presenterStyle = { color: "rgba(0, 0, 255, 0.5)", radius: 4 * evt.pressure };
+            this.presenterStyle = { color: "rgba(0, 0, 255, 0.5)", diameter: 4 * evt.pressure };
             this.presenter.setLastRenderedPoint(evt, this.presenterStyle);
         }
     }
@@ -135,7 +135,7 @@ interface Ink {
 
 dictionary InkTrailStyle {
     DOMString color;
-    unsigned long radius;
+    unrestricted double diameter;
 }
 
 interface InkPresenter {
@@ -154,10 +154,7 @@ interface DelegatedInkTrailPresenter : InkPresenter {
 This proposal provides infrastructure for authors to request a generic `InkPresenter` interface.
 A delegated ink trail `InkPresenter` can be requested and provided by User Agents that support it.
 
-The `DelegatedInkTrailPresenter` `setLastRenderedPoint` method is main addition of this proposal.
-Authors should use this method to indicate to the User Agent which PointerEvent was used as the last rendered point for the current frame.
-The PointerEvent passed to `setLastRenderedPoint` must be a trusted event and should be the last point that was used to by the application to render ink to the view.
-`setLastRenderedPoint` also accepts all relevant properties of rendering the ink stroke so that the User Agent can closely match.
+The `DelegatedInkTrailPresenter` `setLastRenderedPoint` method is main addition of this proposal. Authors should use this method to indicate to the User Agent which PointerEvent was used as the last rendered point for the current frame. The PointerEvent passed to `setLastRenderedPoint` must be a trusted event and should be the last point that was used to by the application to render ink to the view. `setLastRenderedPoint` also accepts all relevant properties of rendering the ink stroke so that the User Agent can closely match the ink rendered by the application. The `diameter` passed as part of `InkTrailStyle` is to indicate the width of the ink trail drawn by the User Agent.
 
 Providing the presenter with the canvas allows the boundaries of the drawing area to be determined. This is necessary so that points and ink outside of the desired area aren't drawn when points are being forwarded. If no canvas is provided, then the containing viewport size will be used.
 
