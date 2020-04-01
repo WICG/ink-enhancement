@@ -151,8 +151,7 @@ interface DelegatedInkTrailPresenter : InkPresenter {
 
 ## Interface Details
 
-This proposal provides infrastructure for authors to request a generic `InkPresenter` interface.
-A delegated ink trail `InkPresenter` can be requested and provided by User Agents that support it.
+This proposal provides infrastructure for authors to request a generic `InkPresenter` interface. A delegated ink trail `InkPresenter` can be requested and provided by User Agents that support it. `requestPresenter` is intentionally made to be extensible via a parameter so that in the future, it can easily be extended to other types of ink presentation. For example, this could include fully delegated ink presentation, or a presenter than can handle complex tips via WebGL shaders.
 
 The `DelegatedInkTrailPresenter` `setLastRenderedPoint` method is main addition of this proposal. Authors should use this method to indicate to the User Agent which PointerEvent was used as the last rendered point for the current frame. The PointerEvent passed to `setLastRenderedPoint` must be a trusted event and should be the last point that was used to by the application to render ink to the view. `setLastRenderedPoint` also accepts all relevant properties of rendering the ink stroke so that the User Agent can closely match the ink rendered by the application. The `diameter` passed as part of `InkTrailStyle` is to indicate the width of the ink trail drawn by the User Agent.
 
