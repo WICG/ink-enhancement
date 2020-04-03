@@ -109,7 +109,7 @@ class InkRenderer {
         this.renderStrokeSegment(evt.x, evt.y);
         if (this.presenter) {
             this.presenterStyle = { color: "rgba(0, 0, 255, 0.5)", diameter: 4 * evt.pressure };
-            this.presenter.setLastRenderedPoint(evt, this.presenterStyle);
+            this.presenter.updateInkTrailStartPoint(evt, this.presenterStyle);
         }
     }
 
@@ -142,7 +142,7 @@ interface InkPresenter {
 }
 
 interface DelegatedInkTrailPresenter : InkPresenter {
-    void setLastRenderedPoint(PointerEvent evt, InkTrailStyle style);
+    void updateInkTrailStartPoint(PointerEvent evt, InkTrailStyle style);
     
     attribute Element presentationArea;
     readonly attribute unsigned long expectedImprovement;
@@ -153,7 +153,9 @@ interface DelegatedInkTrailPresenter : InkPresenter {
 
 This proposal provides infrastructure for authors to request a generic `InkPresenter` interface. A delegated ink trail `InkPresenter` can be requested and provided by User Agents that support it. `requestPresenter` is intentionally made to be extensible via a parameter so that in the future, it can easily be extended to other types of ink presentation. For example, this could include fully delegated ink presentation, or a presenter than can handle complex tips via WebGL shaders.
 
-The `DelegatedInkTrailPresenter` `setLastRenderedPoint` method is main addition of this proposal. Authors should use this method to indicate to the User Agent which PointerEvent was used as the last rendered point for the current frame. The PointerEvent passed to `setLastRenderedPoint` must be a trusted event and should be the last point that was used to by the application to render ink to the view. `setLastRenderedPoint` also accepts all relevant properties of rendering the ink stroke so that the User Agent can closely match the ink rendered by the application. The `diameter` passed as part of `InkTrailStyle` is to indicate the width of the ink trail drawn by the User Agent.
+The `DelegatedInkTrailPresenter` `updateInkTrailStartPoint` method is the main addition of this proposal. Authors should use this method to indicate to the User Agent which PointerEvent was used as the last rendered point for the current frame. The PointerEvent passed to `updateInkTrailStartPoint` must be a trusted event and should be the last point that was used to by the application to render ink to the view. `updateInkTrailStartPoint` also accepts all relevant properties of rendering the ink stroke so that the User Agent can closely match the ink rendered by the application. The trusted PointerEvent and style information are used together by the User Agent as the starting point for the delegated ink trail that will be rendered for the subsequent frame that is produced.
+
+`updateInkTrailStartPoint` accepts an `InkTrailStyle` dictionary to describe how the delegated ink trail should appear when produced by the User Agent. Initially it will accept `color` and `diameter`, where `diameter` describes the width of the ink trail drawn by the User Agent. It is made extensible so that in the future other properties could also be used to describe the trail, such as opacity or more complex brushes.
 
 Providing the presenter with the canvas allows the boundaries of the drawing area to be determined. This is necessary so that points and ink outside of the desired area aren't drawn when points are being forwarded. If no canvas is provided, then the containing viewport size will be used.
 
@@ -161,7 +163,7 @@ The `expectedImprovement` attribute exists to provide site authors with informat
 
 
 ## Other options
-We considered a few different locations for where the method `setLastRenderedPoint` should live, but each had drawbacks:
+We considered a few different locations for where the method `updateInkTrailStartPoint` should live, but each had drawbacks:
 
 - On PointerEvent itself
 
