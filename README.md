@@ -26,7 +26,7 @@ There are a number of progressive enhancements to this programming model that ar
 ## Problem
 Desynchronized canvas is subject to hardware limitations that may not consistently provide latency improvements that applications are depending on for great inking experiences.
 
-- No alpha blending of hardware overlays. On Windows (and ChromeOS according to [this document](https://tinyurl.com/lowlatency-canvas-on-chromeos)) a hardware overlay is not able to blend with other composed content beneath it. Due to this, scenarios like inking on top of a document will not benefit from the latency improvements associated with hardware overlays.
+- No alpha blending of hardware overlays. On Windows a hardware overlay is not able to blend with other composed content beneath it. Due to this, scenarios like inking on top of a document will not benefit from the latency improvements associated with hardware overlays.
 
 - Orientation matching requirements. If the device is not in the default/primary orientation the backing buffer must be created with the same orientation in order to be eligible for an hardware overlay. Doing so for 90 degree rotation means the width and height of the buffer must be swapped and the rendered content must be transformed at some layer (either app or User Agent) before it reaches the screen.
 
