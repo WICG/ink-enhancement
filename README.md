@@ -2,6 +2,8 @@
 
 Author: [Daniel Libby](https://github.com/dlibby-)
 
+***Update**: The Ink API has been proposed as a spec draft. Any future updates to this document will be deferred to https://wicg.github.io/ink-enhancement*
+
 ## Introduction
 Achieving low latency is critical for delivering great inking experiences on the Web. Ink on the Web is generally produced by consuming PointerEvents and rendering strokes to the application view, whether that be 2D or WebGL canvas, or less commonly, SVG or even HTML.
 
