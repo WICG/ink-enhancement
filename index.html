@@ -4,9 +4,8 @@
   <title>Ink API</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="https://www.w3.org/StyleSheets/TR/2016/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version c6f50773a, updated Fri Apr 16 16:45:47 2021 -0700" name="generator">
+  <meta content="Bikeshed version 3d6a6fcbb, updated Wed Jun 16 16:19:39 2021 -0700" name="generator">
   <link href="https://www.w3.org/TR/2021/ink-api" rel="canonical">
-  <meta content="849a84666d30728cae31559ae3c130eb62464cc9" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -567,15 +566,13 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Ink API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2021-05-18">18 May 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2021-07-07">7 July 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
      <dd><a class="u-url" href="https://wicg.github.io/ink-enhancement">https://wicg.github.io/ink-enhancement</a>
      <dt>Latest published version:
      <dd><a href="https://www.w3.org/TR/2021/ink-api">https://www.w3.org/TR/2021/ink-api</a>
-     <dt>Issue Tracking:
-     <dd><a href="https://github.com/WICG/ink-enhancement/issues/">GitHub</a>
      <dt class="editor">Editor:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="https://github.com/bmathwig">Ben Mathwig</a> (<a class="p-org org" href="https://microsoft.com">Microsoft Corporation</a>) <a class="u-email email" href="mailto:benjamin.mathwig@microsoft.com">benjamin.mathwig@microsoft.com</a>
     </dl>
@@ -613,7 +610,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li><a href="#ink-interface"><span class="secno">3.2</span> <span class="content"><code class="idl"><span>Ink</span></code> interface</span></a>
       <li><a href="#ink-presenter"><span class="secno">3.3</span> <span class="content"><code class="idl"><span>InkPresenter</span></code> interface</span></a>
       <li><a href="#ink-trail-style"><span class="secno">3.4</span> <span class="content"><code class="idl"><span>InkTrailStyle</span></code> dictionary</span></a>
-      <li><a href="#navigator-interface-extensions"><span class="secno">3.5</span> <span class="content">Navigator interface extension</span></a>
+      <li><a href="#navigator-interface-extensions"><span class="secno">3.5</span> <span class="content"><code class="idl"><span>Ink</span></code> Navigator interface extension</span></a>
      </ol>
     <li><a href="#usage-examples"><span class="secno">4</span> <span class="content">Usage Examples</span></a>
     <li>
@@ -661,7 +658,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <dl>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="Ink" data-dfn-type="method" data-export data-lt="requestPresenter(type, presentationArea)|requestPresenter(type)" id="dom-ink-requestpresenter"><code>requestPresenter(type, presentationArea)</code></dfn>
     <dd data-md>
-     <p>This method returns an instance of an InkPresenter object that can be used to render ink strokes in-between <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent②">PointerEvent</a></code> dispatches.</p>
+     <p>This method returns an instance of an InkPresenter object within a Promise that can be used to render ink strokes in-between <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent②">PointerEvent</a></code> dispatches. Each time this method is called, a new InkPresenter instance must be created.</p>
    </dl>
    <table class="argumentdef data">
     <caption>Arguments for the <a data-link-type="idl" href="#dom-ink-requestpresenter" id="ref-for-dom-ink-requestpresenter①">Ink.requestPresenter()</a> method.</caption>
@@ -680,7 +677,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <td> <span class="no">✘</span>
       <td>The type of the presenter 
      <tr>
-      <td><dfn class="idl-code" data-dfn-for="Ink/requestPresenter()" data-dfn-type="argument" data-export id="dom-ink-requestpresenter-presentationarea"><code>presentationArea</code><a class="self-link" href="#dom-ink-requestpresenter-presentationarea"></a></dfn> 
+      <td><dfn class="dfn-paneled idl-code" data-dfn-for="Ink/requestPresenter()" data-dfn-type="argument" data-export id="dom-ink-requestpresenter-presentationarea"><code>presentationArea</code></dfn> 
       <td> Element? 
       <td> <span class="yes">✔</span>
       <td> <span class="yes">✔</span>
@@ -698,7 +695,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <dl>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="InkPresenter" data-dfn-type="attribute" data-export id="dom-inkpresenter-presentationarea"><code>presentationArea</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element③">Element</a>, readonly, nullable</span>
     <dd data-md>
-     <p>A reference to the DOM element to which the presenter is scoped to prevent ink presentation outside of the provided area. This area is always the client coordinates for the element’s border box, so moving the element or scrolling the element requires no recalculation on the author’s part. If this is not provided, the default is to use the containing viewport.</p>
+     <p>A reference to the DOM element to which the presenter is scoped to prevent ink presentation outside of the provided area. This area is always the client coordinates for the element’s border box, so moving the element or scrolling the element requires no recalculation on the author’s part. If this is not provided, the default is to use the containing viewport. This element must be in the same document that the InkPresenter is associated with and the same document that is receiving the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent④">PointerEvent</a></code>s, otherwise an error is thrown. If presentationArea is ever removed from the document, the next updateInkTrailStartPoint must throw an error and abort.</p>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="InkPresenter" data-dfn-type="attribute" data-export id="dom-inkpresenter-expectedimprovement"><code>expectedImprovement</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://heycam.github.io/webidl/#idl-unsigned-long" id="ref-for-idl-unsigned-long①">unsigned long</a>, readonly</span>
     <dd data-md>
      <p>This attribute provides information regarding the perceived latency improvements, in milliseconds, that can be expected by using this presenter.</p>
@@ -706,7 +703,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <dl>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="InkPresenter" data-dfn-type="method" data-export id="dom-inkpresenter-updateinktrailstartpoint"><code>updateInkTrailStartPoint(event, style)</code></dfn>
     <dd data-md>
-     <p>This method indicates to the presenter which <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent④">PointerEvent</a></code> was used as the last rendering point for the current frame. This must be a trusted event.</p>
+     <p>This method indicates to the presenter which <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent⑤">PointerEvent</a></code> was used as the last rendering point for the current frame. This must be a trusted event that is in the same document as the <code class="idl"><a data-link-type="idl" href="#inkpresenter" id="ref-for-inkpresenter③">InkPresenter</a></code>.</p>
    </dl>
    <h3 class="heading settled" data-level="3.4" id="ink-trail-style"><span class="secno">3.4. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#dictdef-inktrailstyle" id="ref-for-dictdef-inktrailstyle①">InkTrailStyle</a></code> dictionary</span><a class="self-link" href="#ink-trail-style"></a></h3>
 <pre class="idl lang-idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-inktrailstyle"><code><c- g>InkTrailStyle</c-></code></dfn> {
@@ -722,17 +719,17 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <dd data-md>
      <p>This specifies the diameter of that the presenter should use when displaying the ink trail.</p>
    </dl>
-   <h3 class="heading settled" data-level="3.5" id="navigator-interface-extensions"><span class="secno">3.5. </span><span class="content">Navigator interface extension</span><a class="self-link" href="#navigator-interface-extensions"></a></h3>
+   <h3 class="heading settled" data-level="3.5" id="navigator-interface-extensions"><span class="secno">3.5. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#ink" id="ref-for-ink①">Ink</a></code> Navigator interface extension</span><a class="self-link" href="#navigator-interface-extensions"></a></h3>
     This partial interface defines an extension to the Navigator interface 
 <pre class="idl lang-idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/system-state.html#navigator" id="ref-for-navigator"><c- g>Navigator</c-></a> {
-    [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject" id="ref-for-SameObject"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#ink" id="ref-for-ink①"><c- n>Ink</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="Ink" href="#dom-navigator-ink" id="ref-for-dom-navigator-ink"><c- g>ink</c-></a>;
+    [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject" id="ref-for-SameObject"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#ink" id="ref-for-ink②"><c- n>Ink</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="Ink" href="#dom-navigator-ink" id="ref-for-dom-navigator-ink"><c- g>ink</c-></a>;
 };
 </pre>
    <dl>
-    <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export id="dom-navigator-ink"><code>ink</code></dfn>, <span> of type <a data-link-type="idl-name" href="#ink" id="ref-for-ink②">Ink</a>, readonly</span>
+    <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export id="dom-navigator-ink"><code>ink</code></dfn>, <span> of type <a data-link-type="idl-name" href="#ink" id="ref-for-ink③">Ink</a>, readonly</span>
     <dd data-md>
-     <p>An instance of <code class="idl"><a data-link-type="idl" href="#ink" id="ref-for-ink③">Ink</a></code> for the current document.</p>
+     <p>An instance of <code class="idl"><a data-link-type="idl" href="#ink" id="ref-for-ink④">Ink</a></code> for the current document. It must be associated with the same document that will contain the <code class="idl"><a data-link-type="idl" href="#dom-ink-requestpresenter-presentationarea" id="ref-for-dom-ink-requestpresenter-presentationarea">presentationArea</a></code> and that will receive the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent⑥">PointerEvent</a></code>s to draw.</p>
    </dl>
    <h2 class="heading settled" data-level="4" id="usage-examples"><span class="secno">4. </span><span class="content">Usage Examples</span><a class="self-link" href="#usage-examples"></a></h2>
 <pre class="javascript lang-javascript highlight"><c- a>const</c-> MIN_EXPECTED_IMPROVEMENT <c- o>=</c-> <c- mf>16</c-><c- p>;</c->
@@ -838,7 +835,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <aside class="dfn-panel" data-for="term-for-navigator">
    <a href="https://html.spec.whatwg.org/multipage/system-state.html#navigator">https://html.spec.whatwg.org/multipage/system-state.html#navigator</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-navigator">3.5. Navigator interface extension</a>
+    <li><a href="#ref-for-navigator">3.5. Ink Navigator interface extension</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-context-2d-canvas">
@@ -853,7 +850,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-dom-pointerevent">1. Introduction</a>
     <li><a href="#ref-for-dom-pointerevent①">3.1. Introduction</a>
     <li><a href="#ref-for-dom-pointerevent②">3.2. Ink interface</a>
-    <li><a href="#ref-for-dom-pointerevent③">3.3. InkPresenter interface</a> <a href="#ref-for-dom-pointerevent④">(2)</a>
+    <li><a href="#ref-for-dom-pointerevent③">3.3. InkPresenter interface</a> <a href="#ref-for-dom-pointerevent④">(2)</a> <a href="#ref-for-dom-pointerevent⑤">(3)</a>
+    <li><a href="#ref-for-dom-pointerevent⑥">3.5. Ink Navigator interface extension</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-pointerevent-getpredictedevents">
@@ -873,7 +871,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <a href="https://heycam.github.io/webidl/#Exposed">https://heycam.github.io/webidl/#Exposed</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-Exposed">3.3. InkPresenter interface</a>
-    <li><a href="#ref-for-Exposed①">3.5. Navigator interface extension</a>
+    <li><a href="#ref-for-Exposed①">3.5. Ink Navigator interface extension</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-promise">
@@ -885,7 +883,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <aside class="dfn-panel" data-for="term-for-SameObject">
    <a href="https://heycam.github.io/webidl/#SameObject">https://heycam.github.io/webidl/#SameObject</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-SameObject">3.5. Navigator interface extension</a>
+    <li><a href="#ref-for-SameObject">3.5. Ink Navigator interface extension</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-undefined">
@@ -945,7 +943,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-pointerevents3">[POINTEREVENTS3]
-   <dd>Patrick Lauke; et al. <a href="https://www.w3.org/TR/pointerevents3/">Pointer Events</a>. 1 October 2020. WD. URL: <a href="https://www.w3.org/TR/pointerevents3/">https://www.w3.org/TR/pointerevents3/</a>
+   <dd>Patrick Lauke; et al. <a href="https://www.w3.org/TR/pointerevents3/">Pointer Events</a>. 7 July 2021. WD. URL: <a href="https://www.w3.org/TR/pointerevents3/">https://www.w3.org/TR/pointerevents3/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-webidl">[WebIDL]
@@ -981,7 +979,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <b><a href="#ink">#ink</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-ink">3.2. Ink interface</a>
-    <li><a href="#ref-for-ink①">3.5. Navigator interface extension</a> <a href="#ref-for-ink②">(2)</a> <a href="#ref-for-ink③">(3)</a>
+    <li><a href="#ref-for-ink①">3.5. Ink Navigator interface extension</a> <a href="#ref-for-ink②">(2)</a> <a href="#ref-for-ink③">(3)</a> <a href="#ref-for-ink④">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-ink-requestpresenter">
@@ -990,12 +988,18 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-dom-ink-requestpresenter">3.2. Ink interface</a> <a href="#ref-for-dom-ink-requestpresenter①">(2)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="dom-ink-requestpresenter-presentationarea">
+   <b><a href="#dom-ink-requestpresenter-presentationarea">#dom-ink-requestpresenter-presentationarea</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-ink-requestpresenter-presentationarea">3.5. Ink Navigator interface extension</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="inkpresenter">
    <b><a href="#inkpresenter">#inkpresenter</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-inkpresenter">3.1. Introduction</a>
     <li><a href="#ref-for-inkpresenter①">3.2. Ink interface</a>
-    <li><a href="#ref-for-inkpresenter②">3.3. InkPresenter interface</a>
+    <li><a href="#ref-for-inkpresenter②">3.3. InkPresenter interface</a> <a href="#ref-for-inkpresenter③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-inkpresenter-presentationarea">
@@ -1038,7 +1042,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <aside class="dfn-panel" data-for="dom-navigator-ink">
    <b><a href="#dom-navigator-ink">#dom-navigator-ink</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-navigator-ink">3.5. Navigator interface extension</a>
+    <li><a href="#ref-for-dom-navigator-ink">3.5. Ink Navigator interface extension</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
