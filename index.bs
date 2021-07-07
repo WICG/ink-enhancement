@@ -56,7 +56,7 @@ interface Ink {
 
 <dl dfn-type="method" dfn-for="Ink">
     : <dfn>requestPresenter(type, presentationArea)</dfn>
-    :: This method returns an instance of an InkPresenter object that can be used to render ink strokes in-between {{PointerEvent}} dispatches.
+    :: This method returns an instance of an InkPresenter object within a Promise that can be used to render ink strokes in-between {{PointerEvent}} dispatches. Each time this method is called, a new instance must be created.
 </dl>
 
 <pre class="argumentdef" for="Ink/requestPresenter()">
@@ -77,14 +77,14 @@ interface InkPresenter {
 
 <dl dfn-type="attribute" dfn-for="InkPresenter">
     : <dfn>presentationArea</dfn>
-    :: A reference to the DOM element to which the presenter is scoped to prevent ink presentation outside of the provided area. This area is always the client coordinates for the element's border box, so moving the element or scrolling the element requires no recalculation on the author's part. If this is not provided, the default is to use the containing viewport.
+    :: A reference to the DOM element to which the presenter is scoped to prevent ink presentation outside of the provided area. This area is always the client coordinates for the element's border box, so moving the element or scrolling the element requires no recalculation on the author's part. If this is not provided, the default is to use the containing viewport. This element must be in the same document that the InkPresenter is associated with and the same document that is receiving the {{PointerEvent}}s, otherwise an error is thrown. If presentationArea is ever removed from the document, the next updateInkTrailStartPoint must throw an error and abort.
     : <dfn>expectedImprovement</dfn>
     :: This attribute provides information regarding the perceived latency improvements, in milliseconds, that can be expected by using this presenter.
 </dl>
 
 <dl dfn-type="method" dfn-for="InkPresenter">
     : <dfn>updateInkTrailStartPoint(event, style)</dfn>
-    :: This method indicates to the presenter which {{PointerEvent}} was used as the last rendering point for the current frame. This must be a trusted event.
+    :: This method indicates to the presenter which {{PointerEvent}} was used as the last rendering point for the current frame. This must be a trusted event that is in the same document as the {{InkPresenter}}.
 </dl>
 
 ## {{InkTrailStyle}} dictionary ## {#ink-trail-style}
@@ -102,7 +102,7 @@ dictionary InkTrailStyle {
     :: This specifies the diameter of that the presenter should use when displaying the ink trail.
 </dl>
 
-## Navigator interface extension ## {#navigator-interface-extensions}
+## {{Ink}} Navigator interface extension ## {#navigator-interface-extensions}
 This partial interface defines an extension to the Navigator interface
 
 <pre class="idl lang-idl">
@@ -114,7 +114,7 @@ partial interface Navigator {
 
 <dl dfn-type="attribute" dfn-for="Navigator">
     : <dfn>ink</dfn>
-    :: An instance of {{Ink}} for the current document.
+    :: An instance of {{Ink}} for the current document. It must be associated with the same document that will contain the {{presentationArea}} and that will receive the {{PointerEvent}}s to draw.
 </dl>
 
 Usage Examples {#usage-examples}
