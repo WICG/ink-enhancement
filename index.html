@@ -658,7 +658,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <dl>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="Ink" data-dfn-type="method" data-export data-lt="requestPresenter(type, presentationArea)|requestPresenter(type)" id="dom-ink-requestpresenter"><code>requestPresenter(type, presentationArea)</code></dfn>
     <dd data-md>
-     <p>This method returns an instance of an InkPresenter object within a Promise that can be used to render ink strokes in-between <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent②">PointerEvent</a></code> dispatches. Each time this method is called, a new instance must be created.</p>
+     <p>This method returns an instance of an InkPresenter object within a Promise that can be used to render ink strokes in-between <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent②">PointerEvent</a></code> dispatches. Each time this method is called, a new InkPresenter instance must be created.</p>
    </dl>
    <table class="argumentdef data">
     <caption>Arguments for the <a data-link-type="idl" href="#dom-ink-requestpresenter" id="ref-for-dom-ink-requestpresenter①">Ink.requestPresenter()</a> method.</caption>
@@ -677,7 +677,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <td> <span class="no">✘</span>
       <td>The type of the presenter 
      <tr>
-      <td><dfn class="idl-code" data-dfn-for="Ink/requestPresenter()" data-dfn-type="argument" data-export id="dom-ink-requestpresenter-presentationarea"><code>presentationArea</code><a class="self-link" href="#dom-ink-requestpresenter-presentationarea"></a></dfn> 
+      <td><dfn class="dfn-paneled idl-code" data-dfn-for="Ink/requestPresenter()" data-dfn-type="argument" data-export id="dom-ink-requestpresenter-presentationarea"><code>presentationArea</code></dfn> 
       <td> Element? 
       <td> <span class="yes">✔</span>
       <td> <span class="yes">✔</span>
@@ -729,7 +729,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <dl>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export id="dom-navigator-ink"><code>ink</code></dfn>, <span> of type <a data-link-type="idl-name" href="#ink" id="ref-for-ink③">Ink</a>, readonly</span>
     <dd data-md>
-     <p>An instance of <code class="idl"><a data-link-type="idl" href="#ink" id="ref-for-ink④">Ink</a></code> for the current document. It must be associated with the same document that will contain the <code class="idl"><a data-link-type="idl" href="#dom-inkpresenter-presentationarea" id="ref-for-dom-inkpresenter-presentationarea①">presentationArea</a></code> and that will receive the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent⑥">PointerEvent</a></code>s to draw.</p>
+     <p>An instance of <code class="idl"><a data-link-type="idl" href="#ink" id="ref-for-ink④">Ink</a></code> for the current document. It must be associated with the same document that will contain the <code class="idl"><a data-link-type="idl" href="#dom-ink-requestpresenter-presentationarea" id="ref-for-dom-ink-requestpresenter-presentationarea">presentationArea</a></code> and that will receive the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent⑥">PointerEvent</a></code>s to draw.</p>
    </dl>
    <h2 class="heading settled" data-level="4" id="usage-examples"><span class="secno">4. </span><span class="content">Usage Examples</span><a class="self-link" href="#usage-examples"></a></h2>
 <pre class="javascript lang-javascript highlight"><c- a>const</c-> MIN_EXPECTED_IMPROVEMENT <c- o>=</c-> <c- mf>16</c-><c- p>;</c->
@@ -988,6 +988,12 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-dom-ink-requestpresenter">3.2. Ink interface</a> <a href="#ref-for-dom-ink-requestpresenter①">(2)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="dom-ink-requestpresenter-presentationarea">
+   <b><a href="#dom-ink-requestpresenter-presentationarea">#dom-ink-requestpresenter-presentationarea</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-ink-requestpresenter-presentationarea">3.5. Ink Navigator interface extension</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="inkpresenter">
    <b><a href="#inkpresenter">#inkpresenter</a></b><b>Referenced in:</b>
    <ul>
@@ -1000,7 +1006,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <b><a href="#dom-inkpresenter-presentationarea">#dom-inkpresenter-presentationarea</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-inkpresenter-presentationarea">3.3. InkPresenter interface</a>
-    <li><a href="#ref-for-dom-inkpresenter-presentationarea①">3.5. Ink Navigator interface extension</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-inkpresenter-expectedimprovement">

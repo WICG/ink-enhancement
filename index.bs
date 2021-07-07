@@ -56,7 +56,7 @@ interface Ink {
 
 <dl dfn-type="method" dfn-for="Ink">
     : <dfn>requestPresenter(type, presentationArea)</dfn>
-    :: This method returns an instance of an InkPresenter object within a Promise that can be used to render ink strokes in-between {{PointerEvent}} dispatches. Each time this method is called, a new instance must be created.
+    :: This method returns an instance of an InkPresenter object within a Promise that can be used to render ink strokes in-between {{PointerEvent}} dispatches. Each time this method is called, a new InkPresenter instance must be created.
 </dl>
 
 <pre class="argumentdef" for="Ink/requestPresenter()">
