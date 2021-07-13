@@ -49,20 +49,26 @@ For example, consider an application that has rendered all ink strokes up to the
 <pre class="idl lang-idl">
 interface Ink {
     Promise&lt;InkPresenter&gt; requestPresenter(
-        DOMString type,
-        optional Element? presentationArea = null);
+        optional InkPresenterParam? param = null);
 };
 </pre>
 
 <dl dfn-type="method" dfn-for="Ink">
-    : <dfn>requestPresenter(type, presentationArea)</dfn>
+    : <dfn>requestPresenter(param)</dfn>
     :: This method returns an instance of an InkPresenter object within a Promise that can be used to render ink strokes in-between {{PointerEvent}} dispatches. Each time this method is called, a new InkPresenter instance must be created.
 </dl>
 
-<pre class="argumentdef" for="Ink/requestPresenter()">
-type: The type of the presenter
-presentationArea: An optional {{Element}} that confines the rendering of ink trails to the area bound by the element.
+## {{InkPresenterParam}} dictionary ## {#ink-presenter-param}
+<pre class="idl lang-idl">
+dictionary InkPresenterParam {
+    Element? presentationArea = null;
+};
 </pre>
+
+<dl dfn-type="dict-member" dfn-for="InkPresenterParam">
+    : <dfn>presentationArea</dfn>
+    :: An optional {{Element}} that confines the rendering of ink trails to the area bound by the element. presentationArea must either be null or be in the same document as the Ink interface, otherwise throw an error and abort.
+</dl>
 
 ## {{InkPresenter}} interface ## {#ink-presenter}
 <pre class="idl lang-idl">
@@ -84,7 +90,7 @@ interface InkPresenter {
 
 <dl dfn-type="method" dfn-for="InkPresenter">
     : <dfn>updateInkTrailStartPoint(event, style)</dfn>
-    :: This method indicates to the presenter which {{PointerEvent}} was used as the last rendering point for the current frame. This must be a trusted event that is in the same document as the {{InkPresenter}}.
+    :: This method indicates to the presenter which {{PointerEvent}} was used as the last rendering point for the current frame. This must be a trusted event that is in the same document as the {{InkPresenter}}. The produced delegated ink trail must be rendered for the duration of the next animation frame and then removed.
 </dl>
 
 ## {{InkTrailStyle}} dictionary ## {#ink-trail-style}
@@ -97,9 +103,9 @@ dictionary InkTrailStyle {
 
 <dl dfn-type="dict-member" dfn-for="InkTrailStyle">
     : <dfn>color</dfn>
-    :: This specifies a CSS color code for the presenter to use when rendering the ink trail.
+    :: This specifies a CSS color code for the presenter to use when rendering the ink trail. It must be a valid CSS color, otherwise throw an error and abort.
     : <dfn>diameter</dfn>
-    :: This specifies the diameter of that the presenter should use when displaying the ink trail.
+    :: This specifies the diameter of that the presenter should use when displaying the ink trail. It must be greater than 0, otherwise throw an error and abort.
 </dl>
 
 ## {{Ink}} Navigator interface extension ## {#navigator-interface-extensions}
@@ -129,7 +135,7 @@ function renderInkStroke(x, y, canvas) {
 
 try {
     let canvas = document.querySelector("#canvas");
-    let presenter = await navigator.ink.requestPresenter('delegated-ink-trail', canvas);
+    let presenter = await navigator.ink.requestPresenter({presentationArea: canvas});
 
     // With 'pointerraw' events and JavaScript prediction, we can reduce latency by 16ms, so
     // fallback if InkPresenter is not capable of providing a benefit.
