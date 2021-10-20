@@ -47,6 +47,7 @@ For example, consider an application that has rendered all ink strokes up to the
 
 ## {{Ink}} interface ## {#ink-interface}
 <pre class="idl lang-idl">
+[Exposed=Window]
 interface Ink {
     Promise&lt;InkPresenter&gt; requestPresenter(
         optional InkPresenterParam? param = null);
