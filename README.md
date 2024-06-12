@@ -69,17 +69,9 @@ As Pointer events gets delivered to an app, application continues rendering ink,
 ## Code example
 ```javascript
 const renderer = new InkRenderer();
-const minExpectedImprovement = 8;
 
 try {
     let presenter = await navigator.ink.requestPresenter('delegated-ink-trail', canvas);
-    
-    // With pointerraw events and javascript prediction, we can reduce latency
-    // by 16+ ms, so fallback if the InkPresenter is not capable enough to
-    // provide benefit
-    if (presenter.expectedImprovement < minExpectedImprovement)
-        throw new Error("Little to no expected improvement, falling back");
-
     renderer.setPresenter(presenter);
     window.addEventListener("pointermove", evt => {
         renderer.renderInkPoint(evt);
@@ -144,7 +136,6 @@ interface DelegatedInkTrailPresenter {
     void updateInkTrailStartPoint(PointerEvent evt, InkTrailStyle style);
     
     readonly attribute Element? presentationArea;
-    readonly attribute unsigned long expectedImprovement;
 }
 ```
 
@@ -161,8 +152,6 @@ Note that if two or more pens are simultaneously drawing ink strokes and request
 `updateInkTrailStartPoint` accepts an `InkTrailStyle` dictionary to describe how the delegated ink trail should appear when produced by the User Agent. Initially it will accept `color` and `diameter`, where `diameter` describes the width of the ink trail drawn by the User Agent in CSS pixels. It is made extensible so that in the future other properties could also be used to describe the trail, such as opacity or more complex brushes.
 
 The `presentationArea` attribute reflects the argument passed to `requestPresenter`. Once an InkPresenter has been created this cannot be changed.
-
-The `expectedImprovement` attribute exists to provide site authors with information regarding the perceived latency improvements they can expect by using this API. The attribute will return the expected average number of milliseconds that perceived latency will be improved by using the API, including prediction.
 
 
 ## Other options
