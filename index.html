@@ -674,7 +674,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <pre class="idl lang-idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="inkpresenter"><code><c- g>InkPresenter</c-></code></dfn> {
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element③"><c- n>Element</c-></a>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="Element?" href="#dom-inkpresenter-presentationarea" id="ref-for-dom-inkpresenter-presentationarea"><c- g>presentationArea</c-></a>;
-    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long" id="ref-for-idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="unsigned long" href="#dom-inkpresenter-expectedimprovement" id="ref-for-dom-inkpresenter-expectedimprovement"><c- g>expectedImprovement</c-></a>;
 
     <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-inkpresenter-updateinktrailstartpoint" id="ref-for-dom-inkpresenter-updateinktrailstartpoint"><c- g>updateInkTrailStartPoint</c-></a>(<a data-link-type="idl-name" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent③"><c- n>PointerEvent</c-></a> <dfn class="idl-code" data-dfn-for="InkPresenter/updateInkTrailStartPoint(event, style)" data-dfn-type="argument" data-export id="dom-inkpresenter-updateinktrailstartpoint-event-style-event"><code><c- g>event</c-></code><a class="self-link" href="#dom-inkpresenter-updateinktrailstartpoint-event-style-event"></a></dfn>, <a data-link-type="idl-name" href="#dictdef-inktrailstyle" id="ref-for-dictdef-inktrailstyle"><c- n>InkTrailStyle</c-></a> <dfn class="idl-code" data-dfn-for="InkPresenter/updateInkTrailStartPoint(event, style)" data-dfn-type="argument" data-export id="dom-inkpresenter-updateinktrailstartpoint-event-style-style"><code><c- g>style</c-></code><a class="self-link" href="#dom-inkpresenter-updateinktrailstartpoint-event-style-style"></a></dfn>);
 };
@@ -683,9 +682,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="InkPresenter" data-dfn-type="attribute" data-export id="dom-inkpresenter-presentationarea"><code>presentationArea</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element④">Element</a>, readonly, nullable</span>
     <dd data-md>
      <p>A reference to the DOM element to which the presenter is scoped to prevent ink presentation outside of the provided area. This area is always the client coordinates for the element’s border box, so moving the element or scrolling the element requires no recalculation on the author’s part. If this is not provided, the default is to use the containing viewport. This element must be in the same document that the InkPresenter is associated with and the same document that is receiving the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent④">PointerEvent</a></code>s, otherwise an error is thrown. If presentationArea is ever removed from the document, the next updateInkTrailStartPoint must throw an error and abort.</p>
-    <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="InkPresenter" data-dfn-type="attribute" data-export id="dom-inkpresenter-expectedimprovement"><code>expectedImprovement</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://heycam.github.io/webidl/#idl-unsigned-long" id="ref-for-idl-unsigned-long①">unsigned long</a>, readonly</span>
-    <dd data-md>
-     <p>This attribute provides information regarding the perceived latency improvements, in milliseconds, that can be expected by using this presenter.</p>
    </dl>
    <dl>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="InkPresenter" data-dfn-type="method" data-export id="dom-inkpresenter-updateinktrailstartpoint"><code>updateInkTrailStartPoint(event, style)</code></dfn>
@@ -719,8 +715,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <p>An instance of <code class="idl"><a data-link-type="idl" href="#ink" id="ref-for-ink④">Ink</a></code> for the current document. It must be associated with the same document that will contain the <code class="idl"><a data-link-type="idl" href="#dom-inkpresenterparam-presentationarea" id="ref-for-dom-inkpresenterparam-presentationarea①">presentationArea</a></code> and that will receive the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent⑥">PointerEvent</a></code>s to draw.</p>
    </dl>
    <h2 class="heading settled" data-level="4" id="usage-examples"><span class="secno">4. </span><span class="content">Usage Examples</span><a class="self-link" href="#usage-examples"></a></h2>
-<pre class="javascript lang-javascript highlight"><c- a>const</c-> MIN_EXPECTED_IMPROVEMENT <c- o>=</c-> <c- mf>16</c-><c- p>;</c->
-
+<pre class="javascript lang-javascript highlight">
 <c- a>function</c-> renderInkStroke<c- p>(</c->x<c- p>,</c-> y<c- p>,</c-> canvas<c- p>)</c-> <c- p>{</c->
     <c- c1>// ... Render an ink stroke to the canvas ...</c->
 <c- p>}</c->
@@ -728,12 +723,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <c- k>try</c-> <c- p>{</c->
     <c- a>let</c-> canvas <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"#canvas"</c-><c- p>);</c->
     <c- a>let</c-> presenter <c- o>=</c-> <c- k>await</c-> navigator<c- p>.</c->ink<c- p>.</c->requestPresenter<c- p>({</c->presentationArea<c- o>:</c-> canvas<c- p>});</c->
-
-    <c- c1>// With 'pointerraw' events and JavaScript prediction, we can reduce latency by 16ms, so</c->
-    <c- c1>// fallback if InkPresenter is not capable of providing a benefit.</c->
-    <c- k>if</c-> <c- p>(</c->presenter<c- p>.</c->expectedImprovement <c- o>&lt;</c-> MIN_EXPECTED_IMPROVEMENT<c- p>)</c-> <c- p>{</c->
-        <c- k>throw</c-> <c- k>new</c-> Error<c- p>(</c-><c- u>"No expected improvment using InkPresenter over prediction."</c-><c- p>);</c->
-    <c- p>}</c->
 
     window<c- p>.</c->addEventListener<c- p>(</c-><c- t>'pointermove'</c-><c- p>,</c-> <c- a>function</c-><c- p>(</c->event<c- p>)</c-> <c- p>{</c->
         <c- c1>// Render all of the points that have come from the queue of events.</c->
@@ -802,7 +791,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <ul class="index">
    <li><a href="#dom-inktrailstyle-color">color</a><span>, in §3.5</span>
    <li><a href="#dom-inktrailstyle-diameter">diameter</a><span>, in §3.5</span>
-   <li><a href="#dom-inkpresenter-expectedimprovement">expectedImprovement</a><span>, in §3.4</span>
    <li><a href="#ink">Ink</a><span>, in §3.2</span>
    <li><a href="#dom-navigator-ink">ink</a><span>, in §3.6</span>
    <li><a href="#inkpresenter">InkPresenter</a><span>, in §3.4</span>
@@ -954,7 +942,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <a href="#inkpresenter"><code><c- g>InkPresenter</c-></code></a> {
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element"><c- n>Element</c-></a>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="Element?" href="#dom-inkpresenter-presentationarea"><c- g>presentationArea</c-></a>;
-    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="unsigned long" href="#dom-inkpresenter-expectedimprovement"><c- g>expectedImprovement</c-></a>;
 
     <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-inkpresenter-updateinktrailstartpoint"><c- g>updateInkTrailStartPoint</c-></a>(<a data-link-type="idl-name" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent"><c- n>PointerEvent</c-></a> <a href="#dom-inkpresenter-updateinktrailstartpoint-event-style-event"><code><c- g>event</c-></code></a>, <a data-link-type="idl-name" href="#dictdef-inktrailstyle"><c- n>InkTrailStyle</c-></a> <a href="#dom-inkpresenter-updateinktrailstartpoint-event-style-style"><code><c- g>style</c-></code></a>);
 };
@@ -1009,12 +996,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <b><a href="#dom-inkpresenter-presentationarea">#dom-inkpresenter-presentationarea</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-inkpresenter-presentationarea">3.4. InkPresenter interface</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="dom-inkpresenter-expectedimprovement">
-   <b><a href="#dom-inkpresenter-expectedimprovement">#dom-inkpresenter-expectedimprovement</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-inkpresenter-expectedimprovement">3.4. InkPresenter interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-inkpresenter-updateinktrailstartpoint">
