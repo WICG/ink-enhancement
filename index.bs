@@ -32,31 +32,31 @@ In order for the system compositor to be able to draw the subsequence input poin
 
 For example, consider an application that has rendered all ink strokes up to the current frame of input:
 
-<img src="enhanced-ink-flow-1.png" width="700" />
+<img src="enhanced-ink-flow-1.png" width="700">
 
 <p>Here, the pen has continued to move on the digitizer, but the application has not had a chance to process this input for rendering. To achieve a "superwet" inking experience, the system compositor needs to overlay ink segments for these inputs:</p>
 
-<img src="enhanced-ink-flow-2.png" width="700" />
+<img src="enhanced-ink-flow-2.png" width="700">
 
 <p>When the {{PointerEvent}} is delivered to the web application, the application can seamlessly replace the system compositor ink with application rendered strokes and update the compositor on the last event point that it rendered:</p>
 
 <img src="enhanced-ink-flow-3.png" width="700">
 
-<p>The Ink API provides the {{InkPresenter}} interface to expose the underlying operating system API to achieve this and keeps the extensibility open in order to support additonal presenters in the future.</p>
+<p>The Ink API provides the {{DelegatedInkTrailPresenter}} interface to expose the underlying operating system API to achieve this and keeps the extensibility open in order to support additonal presenters in the future.</p>
 
 
 ## {{Ink}} interface ## {#ink-interface}
 <pre class="idl lang-idl">
 [Exposed=Window]
 interface Ink {
-    Promise&lt;InkPresenter&gt; requestPresenter(
+    Promise&lt;DelegatedInkTrailPresenter&gt; requestPresenter(
         optional InkPresenterParam? param = null);
 };
 </pre>
 
 <dl dfn-type="method" dfn-for="Ink">
     : <dfn>requestPresenter(param)</dfn>
-    :: This method returns an instance of an InkPresenter object within a Promise that can be used to render ink strokes in-between {{PointerEvent}} dispatches. Each time this method is called, a new InkPresenter instance must be created.
+    :: This method returns an instance of an {{DelegatedInkTrailPresenter}} object within a Promise that can be used to render ink strokes in-between {{PointerEvent}} dispatches. Each time this method is called, a new {{DelegatedInkTrailPresenter}} instance must be created.
 </dl>
 
 ## {{InkPresenterParam}} dictionary ## {#ink-presenter-param}
@@ -71,27 +71,24 @@ dictionary InkPresenterParam {
     :: An optional {{Element}} that confines the rendering of ink trails to the area bound by the element. presentationArea must either be null or be in the same document as the Ink interface, otherwise throw an error and abort.
 </dl>
 
-## {{InkPresenter}} interface ## {#ink-presenter}
+## {{DelegatedInkTrailPresenter}} interface ## {#ink-presenter}
 <pre class="idl lang-idl">
 [Exposed=Window]
-interface InkPresenter {
+interface DelegatedInkTrailPresenter {
     readonly attribute Element? presentationArea;
-    readonly attribute unsigned long expectedImprovement;
 
     undefined updateInkTrailStartPoint(PointerEvent event, InkTrailStyle style);
 };
 </pre>
 
-<dl dfn-type="attribute" dfn-for="InkPresenter">
+<dl dfn-type="attribute" dfn-for="DelegatedInkTrailPresenter">
     : <dfn>presentationArea</dfn>
-    :: A reference to the DOM element to which the presenter is scoped to prevent ink presentation outside of the provided area. This area is always the client coordinates for the element's border box, so moving the element or scrolling the element requires no recalculation on the author's part. If this is not provided, the default is to use the containing viewport. This element must be in the same document that the InkPresenter is associated with and the same document that is receiving the {{PointerEvent}}s, otherwise an error is thrown. If presentationArea is ever removed from the document, the next updateInkTrailStartPoint must throw an error and abort.
-    : <dfn>expectedImprovement</dfn>
-    :: This attribute provides information regarding the perceived latency improvements, in milliseconds, that can be expected by using this presenter.
+    :: A reference to the DOM element to which the presenter is scoped to prevent ink presentation outside of the provided area. This area is always the client coordinates for the element's border box, so moving the element or scrolling the element requires no recalculation on the author's part. If this is not provided, the default is to use the containing viewport. This element must be in the same document that the {{DelegatedInkTrailPresenter}} is associated with and the same document that is receiving the {{PointerEvent}}s, otherwise an error is thrown. If presentationArea is ever removed from the document, the next updateInkTrailStartPoint must throw an error and abort.
 </dl>
 
-<dl dfn-type="method" dfn-for="InkPresenter">
+<dl dfn-type="method" dfn-for="DelegatedInkTrailPresenter">
     : <dfn>updateInkTrailStartPoint(event, style)</dfn>
-    :: This method indicates to the presenter which {{PointerEvent}} was used as the last rendering point for the current frame. This must be a trusted event that is in the same document as the {{InkPresenter}}. The produced delegated ink trail must be rendered for the duration of the next animation frame and then removed.
+    :: This method indicates to the presenter which {{PointerEvent}} was used as the last rendering point for the current frame. This must be a trusted event that is in the same document as the {{DelegatedInkTrailPresenter}}. The produced delegated ink trail must be rendered for the duration of the next animation frame and then removed.
 </dl>
 
 ## {{InkTrailStyle}} dictionary ## {#ink-trail-style}
@@ -121,15 +118,13 @@ partial interface Navigator {
 
 <dl dfn-type="attribute" dfn-for="Navigator">
     : <dfn>ink</dfn>
-    :: An instance of {{Ink}} for the current document. It must be associated with the same document that will contain the {{presentationArea}} and that will receive the {{PointerEvent}}s to draw.
+    :: An instance of {{Ink}} for the current document. It must be associated with the same document that will contain the {{DelegatedInkTrailPresenter/presentationArea}} and that will receive the {{PointerEvent}}s to draw.
 </dl>
 
 Usage Examples {#usage-examples}
 ================================
 
 <pre class="javascript lang-javascript">
-const MIN_EXPECTED_IMPROVEMENT = 16;
-
 function renderInkStroke(x, y, canvas) {
     // ... Render an ink stroke to the canvas ...
 }
@@ -137,12 +132,6 @@ function renderInkStroke(x, y, canvas) {
 try {
     let canvas = document.querySelector("#canvas");
     let presenter = await navigator.ink.requestPresenter({presentationArea: canvas});
-
-    // With 'pointerraw' events and JavaScript prediction, we can reduce latency by 16ms, so
-    // fallback if InkPresenter is not capable of providing a benefit.
-    if (presenter.expectedImprovement < MIN_EXPECTED_IMPROVEMENT) {
-        throw new Error("No expected improvment using InkPresenter over prediction.");
-    }
 
     window.addEventListener('pointermove', function(event) {
         // Render all of the points that have come from the queue of events.
