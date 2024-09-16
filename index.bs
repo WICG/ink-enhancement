@@ -50,7 +50,7 @@ For example, consider an application that has rendered all ink strokes up to the
 [Exposed=Window]
 interface Ink {
     Promise&lt;DelegatedInkTrailPresenter&gt; requestPresenter(
-        optional InkPresenterParam? param = null);
+        optional InkPresenterParam param = {});
 };
 </pre>
 
