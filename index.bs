@@ -32,15 +32,15 @@ In order for the system compositor to be able to draw the subsequence input poin
 
 For example, consider an application that has rendered all ink strokes up to the current frame of input:
 
-<img src="enhanced-ink-flow-1.png" width="700">
+<img alt="A partial ink trail is rendered by the application up to the current frame of input. The pen lies further ahead." src="enhanced-ink-flow-1.png" width="700">
 
 <p>Here, the pen has continued to move on the digitizer, but the application has not had a chance to process this input for rendering. To achieve a "superwet" inking experience, the system compositor needs to overlay ink segments for these inputs:</p>
 
-<img src="enhanced-ink-flow-2.png" width="700">
+<img alt="The same partial ink trail rendered by the application, completed with ink segments overlaid by the system compositor until the position of the pen to achieve a 'superwet' inking experience" src="enhanced-ink-flow-2.png" width="700">
 
 <p>When the {{PointerEvent}} is delivered to the web application, the application can seamlessly replace the system compositor ink with application rendered strokes and update the compositor on the last event point that it rendered:</p>
 
-<img src="enhanced-ink-flow-3.png" width="700">
+<img alt="The full ink trail rendered by the application once it has processed all user input events." src="enhanced-ink-flow-3.png" width="700">
 
 <p>The Ink API provides the {{DelegatedInkTrailPresenter}} interface to expose the underlying operating system API to achieve this and keeps the extensibility open in order to support additonal presenters in the future.</p>
 
@@ -50,7 +50,7 @@ For example, consider an application that has rendered all ink strokes up to the
 [Exposed=Window]
 interface Ink {
     Promise&lt;DelegatedInkTrailPresenter&gt; requestPresenter(
-        optional InkPresenterParam? param = null);
+        optional InkPresenterParam param = {});
 };
 </pre>
 
